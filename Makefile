@@ -1,4 +1,4 @@
-.PHONY: install lint format test
+.PHONY: install lint format test data-pin data-check
 
 install:
 	uv sync
@@ -13,3 +13,10 @@ format:
 
 test:
 	uv run pytest
+
+# Once, after downloading the two CSVs by hand: record their SHA-256 in config/data.sha256
+data-pin:
+	uv run python -m nids.data pin
+
+data-check:
+	uv run python -m nids.data check

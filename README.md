@@ -26,7 +26,15 @@ Python 3.12, uv, pandas, scikit-learn, matplotlib, pytest, ruff. CI: GitHub Acti
 
 ## Data
 
-[UNSW-NB15](https://research.unsw.edu.au/projects/unsw-nb15-dataset) (Moustafa and Slay, 2015 and 2016), free for academic research. The files are downloaded by hand once (the official link can't be scripted), and a script checks their SHA-256 before use. Data and trained models are never committed or re-hosted.
+[UNSW-NB15](https://research.unsw.edu.au/projects/unsw-nb15-dataset) (Moustafa and Slay, 2015 and 2016), free for academic research. Data and trained models are never committed or re-hosted.
+
+Getting the files (once, by hand, because the official link can't be scripted):
+
+1. From the dataset page, open the download link and go to the "Training and Testing Sets" folder.
+2. Save `UNSW_NB15_training-set.csv` (175,341 rows) and `UNSW_NB15_testing-set.csv` (82,332 rows) into `data/raw/`.
+3. `make data-check`. It refuses any file whose SHA-256 doesn't match `config/data.sha256`. That file is written once by `make data-pin`, after the files pass every check, and is committed.
+
+The loader also refuses wrong columns, non-numeric or negative values, unknown attack categories, a label that disagrees with its category, and the two files swapped.
 
 ## Quick start
 

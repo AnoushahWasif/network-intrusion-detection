@@ -68,7 +68,12 @@ def preprocessor(with_ttl: bool = True) -> ColumnTransformer:
 
 
 def check_no_leakage(splits: Splits, with_ttl: bool = True) -> None:
-    """Run before every training run. Raises instead of warning."""
+    """Run before every training run. Raises instead of warning.
+
+    Ids are compared within the train file only: the test file numbers its ids from 1 again, so
+    equal ids across the two files mean nothing. Test rows that repeat train rows are counted by
+    data.duplicates, not refused, because they're part of the official split.
+    """
     forbidden = {ID, CATEGORY, LABEL} & set(columns(with_ttl))
     if forbidden:
         raise LeakageError(f"{sorted(forbidden)} would be used as features")
